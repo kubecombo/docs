@@ -1,0 +1,101 @@
+site_name: Kube-combo 文档
+site_author: Kube-combo Team
+repo_name: kubecombo/kube-combo
+repo_url: https://github.com/kubecombo/kube-combo/
+edit_uri: ../docs/edit/master/docs/
+nav:
+  - 主页: 'index.md'
+  - 快速入门:
+      - 一键安装: 'start/one-step-install.md'
+  - 使用指南:
+      - Webhook 使用: 'guide/webhook.md'
+  - 运维指南:
+      - 调整日志等级: 'ops/change-log-level.md'
+      - 其他常见问题: 'ops/faq.md'
+  - 高级功能:
+  - 技术参考:
+      - 文档规范: 'reference/document-convention.md'
+  - 联系方式: 'contact.md'
+theme:
+    name: material
+    custom_dir: overrides
+    language: 'zh'
+    palette:
+      - scheme: default
+        primary: indigo
+        accent: indigo
+        toggle:
+          icon: material/brightness-7
+          name: Switch to dark mode
+      - scheme: slate
+        primary: indigo
+        accent: indigo
+        toggle:
+          icon: material/brightness-4
+          name: Switch to light mode
+    features:
+      - navigation.tabs
+      - navigation.tabs.sticky
+      - navigation.top
+markdown_extensions:
+  - footnotes
+  - fenced_code
+  - attr_list
+  - pymdownx.emoji:
+      emoji_index: !!python/name:materialx.emoji.twemoji
+      emoji_generator: !!python/name:materialx.emoji.to_svg
+  - pymdownx.snippets:
+      auto_append: ["overrides/contact.md"]
+      check_paths: true
+  - toc:
+      permalink: true
+  - pymdownx.superfences:
+      custom_fences:
+        - name: mermaid
+          class: mermaid
+          format: !!python/name:pymdownx.superfences.fence_code_format
+  - pymdownx.tabbed:
+      alternate_style: true
+plugins:
+  - search:
+      separator: '[\s\u200b\-]'
+  - mike: {}
+  - i18n:
+      default_language: zh
+      languages:
+        en:
+          name: English
+          site_name: Kube-combo Document
+        zh:
+          name: 简体中文
+          site_name: Kube-combo 文档
+      nav_translations:
+        en:
+          主页: OVERVIEW
+          快速入门: GETTING STARTED
+          使用指南: USER GUIDE
+          运维指南: OPERATIONS
+          高级功能: ADVANCED USAGE
+          技术参考: REFERENCE
+          联系方式: CONTACT US
+  - git-revision-date-localized:
+      type: date
+      enable_creation_date: true
+  - minify:
+      minify_html: true
+      htmlmin_opts:
+        remove_comments: true
+  - markdownextradata: {}
+extra:
+  version:
+    provider: mike
+    default: stable
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/kubecombo
+    - icon: fontawesome/brands/docker
+      link: https://hub.docker.com/r/kubecombo/kube-combo
+  variables:
+    version: v0.0.1
+    branch: master
+copyright: Copyright &copy; 2023 The Linux Foundation
