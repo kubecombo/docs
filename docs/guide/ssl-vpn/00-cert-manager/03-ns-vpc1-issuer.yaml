@@ -1,0 +1,8 @@
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: ns1-vpn-gw-ca-issuer
+  namespace: ns1
+spec:
+  ca:
+    secretName: vpn-gw-ca

@@ -6,6 +6,7 @@
 
 ```bash
 # git clone kube-ovn 
+
 # 然后创建 kube-ovn kind 环境
 
 make release
@@ -61,6 +62,11 @@ k edit deployment -n cert-manager   cert-manager-webhook
 ### 3.1 构建
 
 ```bash
+
+make docker-build-all
+
+# 或者 
+
 # 构建 kube-combo controller
 make docker-build-base
 make docker-build
@@ -70,7 +76,8 @@ make docker-build-keepalived
 make docker-build-ipsec-vpn
 make docker-build-ssl-vpn
 
-# 加载镜像到 kind kube-ovn cluster
+
+
 
 ```
 
@@ -84,6 +91,9 @@ make docker-push-ssl-vpn
 make docker-push-ipsec-vpn
 make docker-push-keepalived
 
+# 或者
+make docker-push-all
+
 ```
 
 ### 3.3. run
@@ -96,25 +106,29 @@ make docker-push-keepalived
 
 ```bash
 # 准备 kustomize 工具
+
 ln -s /snap/bin/kustomize /root/kubecombo/kube-combo/bin/kustomize
 
+```
+
+```bash
 # install kubecombo crd
+
+make manifests
+
 make install
 
 ```
 
 ``` bash
 
-# load image
+# 装载镜像到 kind kube-ovn cluster
 make kind-load-image
 
-
-
-# install kubecombo controller
+# install kubecombo controller manager
 make deploy
 
-
-# refesh kubecombo controller image and restart
+# refesh kubecombo controller manager
 make kind-reload
 
 ```

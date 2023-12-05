@@ -1,0 +1,24 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: ovpnsrv
+  namespace: ns1
+spec:
+  commonName: ovpnsrv.vpn.gw.com
+  secretName: ovpnsrv
+  duration: 2160h
+  renewBefore: 72h
+  usages:
+    #- client auth # client need
+  - server auth    # server need
+  dnsNames:
+    - ovpnsrv.vpn.gw.com
+  privateKey:
+    algorithm: RSA # 可以改为其他的算法 但是 size 可能需要一定调整
+    size: 2048 # RSA size 2048,4096
+    encoding: PKCS1 # RSA PKCS1, PKCS8
+  issuerRef:
+    name: ns1-vpn-gw-ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+

@@ -1,0 +1,27 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vpn-gw-ca
+  namespace: ns1
+spec:
+  isCA: true
+  commonName: ns1.vpn.gw.com
+  secretName: vpn-gw-ca
+  privateKey:
+    algorithm: RSA # 可以改为其他的算法 但是 size 可能需要一定调整
+    size: 2048 # RSA size 2048,4096
+    encoding: PKCS1 # RSA PKCS1, PKCS8
+  usages:
+    #- digital signature
+  - cert sign
+  - crl sign
+  duration: 8760h # 1year
+  renewBefore: 720h # 30d
+  issuerRef:
+    name: self-signed-cluster-issuer
+    kind: ClusterIssuer
+    group: cert-manager.io
+
+# The usages field is optional. 
+# If you do not specify a value in the usages field, the certificate includes default values, key encipherment, and digital signature.
+# However, if the field isCA is set to true, IsCA will mark this Certificate as valid for certificate signing. This will automatically add the cert sign usage to the list of usages.
