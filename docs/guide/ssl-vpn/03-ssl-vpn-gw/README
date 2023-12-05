@@ -1,0 +1,60 @@
+# 注意
+
+## 1. 生成 dh pem
+
+``` bash
+
+
+openssl dhparam -out dh.pem 2048
+
+cat dh.pem | base64
+
+# or
+
+openssl dhparam 2048 2> /dev/null | base64
+
+
+
+```
+
+
+# debug
+
+## 1. 生成配置时公网 ip 不要写错，否则 client 无法建立连接，典型特征是 client 端没有 ovpn 的路由
+## 2. client 端只需要有一条路由通过 公网ip即可
+
+``` bash
+
+(vv) ➜  Desktop ip route | grep 192.168
+192.168.0.0/24 dev en8  scope link
+192.168.0.111/32 via 172.20.215.254 dev en0
+(vv) ➜  Desktop
+(vv) ➜  Desktop ip route del 192.168.0.111/32
+Executing: /usr/bin/sudo /sbin/route delete 192.168.0.111/32
+Password:
+delete net 192.168.0.111
+(vv) ➜  Desktop
+(vv) ➜  Desktop ip route | grep 192.168
+192.168.0.0/24 dev en8  scope link
+# 比如 我这边只需要这条直连路由
+# 客户的用户那条默认路由是对的，而我这边是多余的
+
+(vv) ➜  Desktop curl 10.1.0.2
+<!DOCTYPE html>
+<html>
+<head>
+<title>Welcome to nginx!</title>
+<style>
+html { color-scheme: light dark; }
+body { width: 35em; margin: 0 auto;
+font-family: Tahoma, Verdana, Arial, sans-serif; }
+</style>
+</head>
+<body>
+
+```
+
+# 3. vpn 建立后客户端应该无法访问公网，只能访问ovpn的内网，目前没有做路由切分
+
+
+
