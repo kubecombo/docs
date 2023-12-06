@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ovn-external-gw-config
+  namespace: kube-system
+data:
+  enable-external-gw: "true"
+  external-gw-nodes: "empty"
+  type: "centrailized" 
+  external-gw-nic: "enx4ce173470bd6" # 用于接入 ovs 公网网桥的网卡
+
+
+# 如果是 kind e2e 不需要执行该配置，e2e 已包含
+#
+#

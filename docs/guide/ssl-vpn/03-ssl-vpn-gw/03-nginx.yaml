@@ -5,7 +5,7 @@ metadata:
   name: nginx
 spec:
   externalSubnet: external
-  v4Ip: 192.168.0.110
+  v4Ip: 192.168.7.110
   type: fip
 
 ---
@@ -31,7 +31,8 @@ spec:
     - name: nginx
       image: nginx:latest
     - name: netshoot
-      image: docker.io/nicolaka/netshoot:latest
+      #image: docker.io/nicolaka/netshoot:latest
+      image: nicolaka/netshoot:latest
       imagePullPolicy: Never
       command:
         - sh
