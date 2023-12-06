@@ -1,0 +1,37 @@
+---
+kind: OvnEip
+apiVersion: kubeovn.io/v1
+metadata:
+  name: keepalived01-0
+spec:
+  externalSubnet: external
+  v4Ip: 192.168.7.4
+  type: nat
+
+---
+kind: OvnFip
+apiVersion: kubeovn.io/v1
+metadata:
+  name: keepalived01-0
+spec:
+  ovnEip: keepalived01-0
+  ipName: keepalived01-0.ns1
+
+---
+kind: OvnEip
+apiVersion: kubeovn.io/v1
+metadata:
+  name: keepalived01-1
+spec:
+  externalSubnet: external
+  v4Ip: 192.168.7.5
+  type: nat
+
+---
+kind: OvnFip
+apiVersion: kubeovn.io/v1
+metadata:
+  name: keepalived01-1
+spec:
+  ovnEip: keepalived01-1
+  ipName: keepalived01-1.ns1
