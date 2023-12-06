@@ -54,3 +54,75 @@ cd 02-ns1
 bash -x init.sh
 
 ```
+
+## 4. 使用 ssl vpn gw
+
+```bash
+# tree ssl-vpn/03-ssl-vpn-gw/
+ssl-vpn/03-ssl-vpn-gw/
+├── 01-keepalived-vip-fip.yaml
+├── 02-ovpn-auto-secret.yaml
+├── 03-nginx.yaml
+├── clean.sh
+├── get-ovpn-client.sh
+├── init.sh
+├── README
+└── zz-generate-a-ovpn-client.sh
+
+cd ssl-vpn/03-ssl-vpn-gw/
+
+bash -x init.sh
+
+# 执行后，可以看到一下资源
+
+root@empty:~/kubecombo/docs/docs/guide/ssl-vpn/03-ssl-vpn-gw# k get po -n ns1
+NAME             READY   STATUS    RESTARTS   AGE
+keepalived01-0   2/2     Running   0          7m56s
+keepalived01-1   2/2     Running   0          7m54s
+vpc1-nginx       2/2     Running   0          2m11s
+
+# keepalived01 是主备维护的 ssl vpn gw 网关
+
+# vpc1-nginx 是用于经过 vpn gw pod 访问到的 vpc subnet 内部的资源
+
+```
+
+### 4.1 获取 ssl vpn 客户端配置
+
+按照实际情况，修改 get-ovpn-client.sh 中的必要参数：
+
+```bash
+PUBLIC_IP="172.19.0.17"
+SECRET_NAME="ovpncli1"
+NS="ns1"
+
+# 以上字段有可能需要修改
+```
+
+按需修改后，执行该脚本获取 ssl vpn 客户端配置：
+
+```bash
+
+bash get-ovpn-client.sh
+
+# 查看 ssl vpn 客户端文件
+
+# ls -l /tmp/ovpncli1.ovpn
+-rw-r--r-- 1 root root 7391 Dec  6 10:05 /tmp/ovpncli1.ovpn
+
+```
+
+### 4.2 基于 ssl vpn 客户端连接到 ssl vpn gw 中的服务
+
+目前有几个开源免费客户端推荐使用：
+
+- windows 使用 openvpn.exe
+- mac 使用 Tunnelblick.app
+- ubunutu (22.04) 使用 openvpn
+
+```bash
+apt install openvpn network-manager-openvpn-gnome
+
+openvpn --config /tmp/ovpncli1.ovpn
+
+```

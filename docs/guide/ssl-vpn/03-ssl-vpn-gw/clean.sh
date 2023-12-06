@@ -1,9 +1,8 @@
 #!/bin/bash
 
+echo "该操作会清理 vip，fip，如果需要保留 vip fip，请中断该脚本"
 
-kubectl delete -f 01-nginx.yaml -f 02-ovpn.yaml -f 03-ovpn-auto-secret.yaml
+sleep 10
 
-
-kubectl delete po -n kube-system -l app=kube-ovn-controller
-
+kubectl delete -f 01-keepalived-vip-fip.yaml -f 02-ovpn-auto-secret.yaml  -f 03-nginx.yaml
 

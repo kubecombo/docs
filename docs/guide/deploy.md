@@ -62,6 +62,9 @@ k edit deployment -n cert-manager   cert-manager-webhook
 ### 3.1 构建
 
 ```bash
+# 基于 host network 模式构建更为稳定，需要创建一个 host network builder
+
+docker buildx create --use --name hostbuilder --driver-opt network=host --buildkitd-flags '--allow-insecure-entitlement network.host' --platform linux/amd64
 
 make docker-build-all
 
@@ -130,5 +133,22 @@ make deploy
 
 # refesh kubecombo controller manager
 make kind-reload
+
+```
+
+在 containerd 环境中进行测试
+
+```bash
+
+# 装载镜像到 kind kube-ovn cluster
+## kube-rbac-proxy 很有可能下载不到，所以手动 load
+ctr -n=k8s.io image import /tmp/kube-rbac-proxy.v0.15.0.tar
+make crictl-pull-image
+
+# install kubecombo controller manager
+make deploy
+
+# refesh kubecombo controller manager
+make ctd-reload
 
 ```
