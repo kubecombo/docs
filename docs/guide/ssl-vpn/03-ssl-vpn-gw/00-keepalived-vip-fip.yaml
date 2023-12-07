@@ -1,3 +1,9 @@
+# 目前认为 vip 以及 pod 切换 ip 但是 fip 不变
+# 会导致出现目前解决不了的网络问题
+# vip fip 不通
+# pod ip fip ping 首包，丢 10 个包以上
+# 可能跟 vip 没有 lsp 有关系，没有在流表层精确维护
+
 ---
 kind: Vip
 apiVersion: kubeovn.io/v1
@@ -5,6 +11,7 @@ metadata:
   name: keepalived-vip
 spec:
   subnet: vpc1-subnet1
+  #v4ip: 10.1.0.2
   type: ""
 
 ---
@@ -14,6 +21,7 @@ metadata:
   name: keepalived-eip
 spec:
   externalSubnet: external
+  #v4Ip: 192.168.7.3
   type: nat
 
 ---
@@ -25,18 +33,3 @@ spec:
   ovnEip: keepalived-eip
   ipType: vip         # 默认情况下 fip 是面向 pod ip 的，这里需要标注指定对接到 vip 资源
   ipName: keepalived-vip
-
----
-kind: KeepAlived
-apiVersion: vpn-gw.kubecombo.com/v1
-metadata:
-  name: vpc1-subnet1-keepalived-01
-  namespace: ns1
-spec:
-  image: icoy/kube-combo-keepalived:v0.0.1
-  subnet: vpc1-subnet1
-  vipV4: 10.1.0.2 
-  vipV6: 
-
-# vip is the ip address of vip
-# todo:// support duastack 

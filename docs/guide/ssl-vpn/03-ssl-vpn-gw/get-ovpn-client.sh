@@ -2,8 +2,7 @@
 set -euo pipefail
 # PUBLIC_IP should be lb service external ip or floating ip
 
-PUBLIC_IP="192.168.7.3"
-PUBLIC_IP="192.168.7.4"
+PUBLIC_IP="192.168.7.23"
 SECRET_NAME="ovpncli1"
 NS="ns1"
 SSL_VPN_SERVER_PORT="1194" # 目前不支持修改, udp 1194, tcp 443, udp 性能往往更好

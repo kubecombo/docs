@@ -1,0 +1,27 @@
+---
+kind: OvnEip
+apiVersion: kubeovn.io/v1
+metadata:
+  name: test-vip
+spec:
+  externalSubnet: external
+  type: nat
+
+---
+kind: Vip
+apiVersion: kubeovn.io/v1
+metadata:
+  name: test-vip
+spec:
+  subnet: vpc1-subnet1
+  type: ""
+
+---
+kind: OvnFip
+apiVersion: kubeovn.io/v1
+metadata:
+  name: test-vip
+spec:
+  ovnEip: test-vip
+  ipType: vip         # 默认情况下 fip 是面向 pod ip 的，这里需要标注指定对接到 vip 资源
+  ipName: test-vip
