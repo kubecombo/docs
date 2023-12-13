@@ -1,8 +1,8 @@
 # openvpn 文档
 
-如无必要需求，未来至少一年内使用 openvpn release 2.6
-目前 ubuntu 22.04 支持 openvpn 2.6.9
+目前 ubuntu 22.04 支持 openvpn 2.5.9
 openvpn 社区刚发布 2.6.8
+未来至少一年内可能会使用 openvpn release 2.6
 
 ## openvpn [服务端配置](https://openvpn.net/community-resources/reference-manual-for-openvpn-2-6/)
 
