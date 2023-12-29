@@ -1,0 +1,94 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: alice
+    namespace: ns1
+    labels:
+        app: alice
+spec:
+ replicas: 1
+ selector:
+    matchLabels:
+        app: alice
+ template:
+    metadata:
+     labels:
+        app: alice
+     annotations:
+        ovn.kubernetes.io/logical_switch: vpc1-subnet1  
+    spec:
+        containers:
+        - name: nginx
+          image: nginx:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+        - name: netshoot
+          image: nicolaka/netshoot
+          imagePullPolicy: Never
+          command: ["/bin/bash"]
+          args: ["-c", "while true; do ping localhost; sleep 60;done"]
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: bob
+    namespace: ns1
+    labels:
+        app: bob
+spec:
+ replicas: 1
+ selector:
+    matchLabels:
+        app: bob
+ template:
+    metadata:
+     labels:
+        app: bob
+     annotations:
+        ovn.kubernetes.io/logical_switch: vpc2-subnet1
+    spec:
+        containers:
+        - name: nginx
+          image: nginx:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+        - name: netshoot
+          image: nicolaka/netshoot
+          imagePullPolicy: Never
+          command: ["/bin/bash"]
+          args: ["-c", "while true; do ping localhost; sleep 60;done"]
+
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: carrie
+    namespace: ns1
+    labels:
+        app: carrie
+spec:
+ replicas: 1
+ selector:
+    matchLabels:
+        app: carrie
+ template:
+    metadata:
+     labels:
+        app: carrie
+     annotations:
+        ovn.kubernetes.io/logical_switch: vpc3-subnet1
+    spec:
+        containers:
+        - name: nginx
+          image: nginx:latest
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+        - name: netshoot
+          image: nicolaka/netshoot
+          imagePullPolicy: Never
+          command: ["/bin/bash"]
+          args: ["-c", "while true; do ping localhost; sleep 60;done"]
+

@@ -1,0 +1,94 @@
+---
+kind: Vip
+apiVersion: kubeovn.io/v1
+metadata:
+  name: mars-keepalived-vip
+spec:
+  subnet: vpc1-subnet1
+  type: ""
+
+---
+kind: KeepAlived
+apiVersion: vpn-gw.kubecombo.com/v1
+metadata:
+  name: vpc1-subnet1-keepalived-01
+  namespace: ns1
+spec:
+  image: icoy/kube-combo-keepalived:v0.0.1
+  subnet: vpc1-subnet1
+  vipV4: 10.1.0.71
+  vipV6: 
+
+# vip is the ip address of vip
+# todo:// support duastack 
+
+---
+kind: OvnEip
+apiVersion: kubeovn.io/v1
+metadata:
+  name: mars
+spec:
+  externalSubnet: external
+  v4Ip: 172.19.0.33
+  type: fip
+
+---
+kind: OvnFip
+apiVersion: kubeovn.io/v1
+metadata:
+  name: mars
+spec:
+  ovnEip: mars
+  ipType: vip
+  ipName: mars-keepalived-vip
+
+---
+kind: VpnGw
+apiVersion: vpn-gw.kubecombo.com/v1
+metadata:
+  name: mars
+  namespace: ns1
+spec:
+  cpu: "1"
+  memory: "1024M"
+  qosBandwidth: "20"
+  replicas: 2 # vrrp 要求至少 2 个节点
+  selector:
+  tolerations:
+  affinity:
+  enableSslVpn: false
+  sslVpnSecret: ovpnsrv
+  dhSecret: ssl-vpn-dh-pem
+  sslVpnImage: icoy/kube-combo-openvpn:v0.0.1
+  sslVpnCipher: AES-256-GCM
+  sslVpnAuth: SHA1
+  sslVpnProto: udp
+  sslVpnSubnetCidr: 10.240.0.0/16
+  enableIpsecVpn: true
+  ipsecSecret: ovpn-0-ipsec-vpn
+  ipsecVpnImage: icoy/kube-combo-strongswan:v0.0.1
+  ipsecSecret: mars-ipsec-vpn
+  keepalived: "vpc1-subnet1-keepalived-01"
+
+---
+kind: IpsecConn
+apiVersion: vpn-gw.kubecombo.com/v1
+metadata:
+  name: mars-moon
+  namespace: ns1
+spec:
+  vpnGw: mars
+  # pubkey use cert-manager x509 ca, support ipv4 ipv6
+  # psk use pre shared key, not tested
+  auth: pubkey
+  # default should be safe enough
+  proposals: default
+  # ike version 0, 1, 2
+  ikeVersion: "2"
+  localCN: mars.vpn.gw.com
+  localPublicIp: 172.19.0.33
+  localPrivateCidrs: 10.3.0.0/24
+  remoteCN: moon.vpn.gw.com
+  remotePublicIp: 172.19.0.11
+  remotePrivateCidrs: 10.1.0.0/24
+

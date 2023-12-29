@@ -1,0 +1,29 @@
+kind: Vpc
+apiVersion: kubeovn.io/v1
+metadata:
+  name: vpc2
+spec:
+  namespaces:
+  - ns1
+  enableExternal: true
+
+---
+apiVersion: kubeovn.io/v1
+kind: Subnet
+metadata:
+  name: vpc2-subnet1
+spec:
+  cidrBlock: 10.2.0.0/24
+  default: false
+  disableGatewayCheck: false
+  disableInterConnection: true
+  enableEcmp: false
+  gatewayNode: ""
+  gatewayType: distributed
+  natOutgoing: false
+  private: false
+  protocol: IPv4
+  provider: ovn
+  vpc: vpc2
+  namespaces:
+  - ns1

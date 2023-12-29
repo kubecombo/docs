@@ -1,0 +1,23 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: sun-cert
+  namespace: ns1
+spec:
+  commonName: sun.vpn.gw.com
+  secretName: sun-ipsec-vpn
+  duration: 2160h
+  renewBefore: 72h
+  usages:
+  - ipsec tunnel
+  dnsNames:
+    - sun.vpn.gw.com
+  privateKey:
+    algorithm: RSA # 可以改为其他的算法 但是 size 可能需要一定调整
+    size: 2048 # RSA size 2048,4096
+    encoding: PKCS1 # RSA PKCS1, PKCS8
+  issuerRef:
+    name: ns1-vpn-gw-ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+

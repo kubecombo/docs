@@ -1,0 +1,18 @@
+# ipsec vpn
+
+## ipsec vpn 基于 refresh-connection.sh refresh 刷新用户变更过的配置
+
+
+```bash
+
+# moon init
+
+./refresh-connection.sh refresh "moon-sun moon.vpn.gw.com 192.168.7.11 10.1.0.0/24 sun.vpn.gw.com 192.168.7.22 10.2.0.0/24,"
+
+
+
+# sun init
+./refresh-connection.sh refresh "sun-moon sun.vpn.gw.com 192.168.7.22 10.2.0.0/24 moon.vpn.gw.com 192.168.7.11 10.1.0.0/24,"
+
+
+```

@@ -8,16 +8,14 @@
 # git clone kube-ovn 
 
 # 然后创建 kube-ovn kind 环境
-
 make release
-
 make kind-init; make kind-install-webhook
 
+# webhook 如果遇到网络问题，需要重新执行
 make kind-install-webhook
-# webhook 最好执行两次
 
+# kube-combo e2e 功能测试需要公网配合测试
 make ovn-vpc-nat-gw-conformance-e2e
-
 
 ```
 
@@ -110,7 +108,7 @@ make docker-push-all
 ```bash
 # 准备 kustomize 工具
 
-ln -s /snap/bin/kustomize /root/kubecombo/kube-combo/bin/kustomize
+cp /snap/bin/kustomize /root/kubecombo/kube-combo/bin/kustomize
 
 ```
 
@@ -132,7 +130,7 @@ make kind-load-image
 make deploy
 
 # refesh kubecombo controller manager
-make kind-reload
+make reload
 
 ```
 
@@ -147,8 +145,5 @@ make crictl-pull-image
 
 # install kubecombo controller manager
 make deploy
-
-# refesh kubecombo controller manager
-make ctd-reload
 
 ```

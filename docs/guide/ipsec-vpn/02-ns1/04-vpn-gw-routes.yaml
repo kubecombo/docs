@@ -1,0 +1,43 @@
+
+---
+kind: Vpc
+apiVersion: kubeovn.io/v1
+metadata:
+  name: vpc1
+spec:
+  namespaces:
+  - ns1
+  enableExternal: true
+  staticRoutes:
+    - cidr: 10.2.0.0/24
+      nextHopIP: 10.1.0.11
+      policy: policyDst
+    - cidr: 10.3.0.0/24
+      nextHopIP: 10.1.0.11
+      policy: policyDst
+---
+kind: Vpc
+apiVersion: kubeovn.io/v1
+metadata:
+  name: vpc2
+spec:
+  namespaces:
+  - ns1
+  enableExternal: true
+  staticRoutes:
+    - cidr: 10.1.0.0/24
+      nextHopIP: 10.2.0.22
+      policy: policyDst
+---
+kind: Vpc
+apiVersion: kubeovn.io/v1
+metadata:
+  name: vpc3
+spec:
+  namespaces:
+  - ns1
+  enableExternal: true
+  staticRoutes:
+    - cidr: 10.1.0.0/24
+      nextHopIP: 10.2.0.22
+      policy: policyDst
